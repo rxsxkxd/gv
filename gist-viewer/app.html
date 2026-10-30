@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src https://api.github.com https://gist.githubusercontent.com">
+  <meta name="referrer" content="no-referrer">
+  <title>Gist Viewer</title>
+  <style>
+    body { font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 0 16px; color: #333; }
+    .message { color: #666; }
+    .message.error { color: #d9534f; }
+    pre { background: #f6f8fa; padding: 16px; border-radius: 6px; overflow-x: auto; }
+  </style>
+</head>
+<body>
+  <main id="app">
+    <p class="message">読み込み中...</p>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
