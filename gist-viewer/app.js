@@ -1,7 +1,7 @@
 'use strict';
 
 // 表示を許す Gist の持ち主と、読むファイル名
-const OWNER = 'your-github-username';
+const OWNER = 'rxsxkxd';
 const FILE = 'data.json';
 
 const app = document.getElementById('app');

@@ -88,7 +88,43 @@ Secret Gist は private ではない。次のことを承知したうえで使�
 - 更新: `gh gist edit <ID> data.json`（古い版は履歴に残る）
 - 削除: `gh gist delete <ID>`
 
-## 6. 将来、要件が変わったとき
+## 6. デプロイ
+
+前提: このディレクトリをそのままリポジトリ `rxsxkxd/gv` にして公開する。Gist も同じ `rxsxkxd` アカウントで作る。
+
+### 6.1 公開されるもの
+
+- 無料プランの GitHub Pages は、**public リポジトリでしか使えない**。リポジトリの中身はすべて公開される。
+  - 今あるのは `gist-viewer-feasibility.md`（このファイル）と `gist-viewer/` だけで、秘密情報はない。
+  - このファイルも Pages から配信される。中身は設計の説明だけなので、公開されても問題ない。
+- データは Gist にあり、リポジトリには入らない。データを誤ってコミットしないこと。
+
+### 6.2 手順
+
+1. **`OWNER` を設定する**: `gist-viewer/app.js` の `OWNER` を `rxsxkxd` に変えて、コミットする。
+2. **push する**: `git push -u origin master`
+3. **Pages を有効にする**: リポジトリの Settings → Pages → Source を「Deploy from a branch」にし、`master` / `/ (root)` を選ぶ。CLI なら次のとおり。
+   ```sh
+   gh api repos/rxsxkxd/gv/pages -X POST -f 'source[branch]=master' -f 'source[path]=/'
+   ```
+   1〜2 分で `https://rxsxkxd.github.io/gv/` に公開される。
+4. **Gist を作る**: `gh gist create data.json`（オプションなしで Secret になる）。出力された URL の末尾が Gist ID。
+5. **開く**: `https://rxsxkxd.github.io/gv/gist-viewer/app.html#id=<GistID>`
+
+### 6.3 更新
+
+| 対象 | 方法 | 反映まで |
+|---|---|---|
+| app.html / app.js | コミットして push | Pages の再ビルドで 1〜2 分 |
+| データ | `gh gist edit <ID> data.json` | API 経由なのですぐ（1MB を超えて raw URL から取る場合は数分キャッシュされる） |
+
+### 6.4 注意
+
+- **`gh` のログインアカウント**: `gh` が普段使いのアカウントでログインしていると、Gist がそちらに作られてしまう。そうなると `OWNER` の確認で表示されないうえ、普段使いのアカウントと結びつく。`gh auth status` で確かめ、必要なら `gh auth switch` で `rxsxkxd` に切り替える。
+- **コミットの作者**: `user.email` は `rxsxkxd` の noreply アドレスになっている。普段使いのメールアドレスが履歴に残らないよう、このままにする。
+- **URL を短くしたいとき**: Pages が配信元に選べるのは、ルートか `/docs` だけ。`/gist-viewer/` を URL から外したいなら、`app.html` と `app.js` をルートに移す。
+
+## 7. 将来、要件が変わったとき
 
 | 変わったこと | 対応 |
 |---|---|
